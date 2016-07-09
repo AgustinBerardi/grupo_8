@@ -89,9 +89,9 @@
         <div class="row">
             <div class="box">
                 <div class="col-lg-12">
-					<h2>Contrase&ntilde;a cambiada correctamente
-					<?= $this->session->userdata('username');?><br /></h2>
-					<center> <?=anchor(site_url().'home_controller','Volver al home',"class = 'btn btn-info'");?></center>
+					<?php
+						echo 'Su reserva se ha solicitado correctamente';
+					?>
                 </div>
             </div>
         </div>

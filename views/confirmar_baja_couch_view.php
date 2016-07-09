@@ -89,9 +89,18 @@
         <div class="row">
             <div class="box">
                 <div class="col-lg-12">
-					<h2>Contrase&ntilde;a cambiada correctamente
-					<?= $this->session->userdata('username');?><br /></h2>
-					<center> <?=anchor(site_url().'home_controller','Volver al home',"class = 'btn btn-info'");?></center>
+                    <center>
+                  <?php $reservas_couch= $this->couch_model->traer_reservas($id_couch);            
+                    if(sizeof($reservas_couch)== 0){?>
+					Desea borrar su couch?
+                    <br />
+                    <br />
+                    <?=anchor(site_url().'user_controller/bajar_couch','Aceptar','class="btn btn-info"')?>
+                    <?=anchor(site_url().'couch_controller/ver_couch/'.$id_couch,'Cancelar','class="btn btn-info"')?> <?php
+                    }else{ echo "Usted no puede eliminar su couch debido a que tiene reservas<br>";
+                            echo anchor(site_url().'couch_controller/ver_couch/'.$id_couch,'Volver al couch','class="btn btn-info"');
+                    }?>
+                    </center>
                 </div>
             </div>
         </div>

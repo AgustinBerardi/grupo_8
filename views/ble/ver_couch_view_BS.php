@@ -86,12 +86,36 @@
     </nav>
 
     <div class="container">
-        <div class="row">
+		<div class="row">
             <div class="box">
                 <div class="col-lg-12">
-					<h2>Contrase&ntilde;a cambiada correctamente
-					<?= $this->session->userdata('username');?><br /></h2>
-					<center> <?=anchor(site_url().'home_controller','Volver al home',"class = 'btn btn-info'");?></center>
+				    <?php
+						$ciudad = $this->couch_model->traer_campo('ciudad_nombre, provincia_id',$localidad,'ciudad');
+						$provincia = $this->couch_model->traer_campo('provincia_nombre',$ciudad['provincia_id'],'provincia');
+						$tipo = $this->couch_model->traer_campo('nombre_couch',$tipo,'tipo_couch');
+						$username = $this->couch_model->traer_campo('username',$usuario,'user');
+					?>
+					<div class="col-lg-6">
+                    <img src="<?=base_url()."CodeIgniter-2.2.6/uploads/".$foto?>" width=100%/>
+					</div>
+					<div class="col-lg-6">
+					<p>Titulo: <?=$nombre_couch ?></p>
+					<p>Disponible desde : <?=' '.$fecha_inicio.'  '?>  hasta:  <?=' '.$fecha_fin?></p>
+					<p>Localidad: <?=utf8_decode($provincia['provincia_nombre'])?>, <?=utf8_decode($ciudad['ciudad_nombre'])?></p>
+					<p>Tipo: <?=$tipo['nombre_couch']?></p>
+					<p>Publicado por: <?=$username['username']?> </p>
+					<p>Descripci&oacute;n:</p>
+					<?=$descripcion?>
+					<?php
+						if($this->session->userdata('id') == $usuario){?>
+						<p><br><?=anchor(site_url().'home_controller','Editar',"class='btn btn-info'")?></p>
+						<p><?=anchor(site_url().'home_controller','Despublicar',"class='btn btn-info'")?></p>
+						<p><?=anchor(site_url().'home_controller','Ver solicitudes',"class='btn btn-info'")?></p>
+					<?php
+					}else{
+                       ?><p><br><?=anchor(site_url().'user_controller/solicitar_reserva/'.$id,'Solicitar reserva',"class='btn btn-info'")?></p><?php }?>
+					<p><br><?=anchor(site_url().'home_controller','Ir al inicio',"class='btn btn-info'")?></p>
+					</div>
                 </div>
             </div>
         </div>

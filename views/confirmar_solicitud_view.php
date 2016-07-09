@@ -89,9 +89,19 @@
         <div class="row">
             <div class="box">
                 <div class="col-lg-12">
-					<h2>Contrase&ntilde;a cambiada correctamente
-					<?= $this->session->userdata('username');?><br /></h2>
-					<center> <?=anchor(site_url().'home_controller','Volver al home',"class = 'btn btn-info'");?></center>
+                    <center>
+					<?php
+                        echo $error;
+                        echo "<br>";
+                        //echo anchor(site_url().'user_controller/agregar_reserva/'.$fecha_inicio.'/'.$fecha_fin.'/'.$id_couch.'/'.$token,'Aceptar',"class='btn btn-info'");
+                        echo "<hr>";
+						echo anchor(site_url().'user_controller/agregar_reserva/'.$token,'Aceptar',"class='btn btn-info'");
+                        echo " ";
+                        echo anchor(site_url().'couch_controller/ver_couch/'.$id_couch,'Cancelar',"class='btn btn-info'");
+                    
+                    
+                    ?>
+                    </center>
                 </div>
             </div>
         </div>

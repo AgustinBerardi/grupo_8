@@ -89,9 +89,61 @@
         <div class="row">
             <div class="box">
                 <div class="col-lg-12">
-					<h2>Contrase&ntilde;a cambiada correctamente
-					<?= $this->session->userdata('username');?><br /></h2>
-					<center> <?=anchor(site_url().'home_controller','Volver al home',"class = 'btn btn-info'");?></center>
+					<p>Reservas:</p>
+                	<center>
+					<?php 
+                    $fecha_actual= date('Y-m-d');
+                    foreach ($reservas as $reserva){
+                	   if(!($reserva['aceptado'])) {
+                		 $usuario=$this->couch_model->traer_usuario($reserva['id_user']);
+						?><mark class="esp"><?=$usuario['username'] . ' '?></mark><?php
+                         echo '|'; 
+                         ?><mark class="esp"><?=$reserva['fecha_inicio'].' hasta: '.$reserva['fecha_fin']?></mark><?php
+						 echo '|';
+                         ?><mark class="esp"><?=$usuario['email']?></mark><?php
+						 echo "<br>"."<br>";
+                         echo anchor(site_url().'user_controller/aceptar_reserva/'.$reserva['id_user'],'Aceptar','class="btn btn-info"');
+                         echo ' '.anchor(site_url().'user_controller/rechazar_reserva/'.$reserva['id_user'],'Rechazar','class="btn btn-info"');
+                         echo "<br>";echo "<br>";
+                        
+                        }
+                   else
+                   {
+                             $usuario=$this->couch_model->traer_usuario($reserva['id_user']);
+							?><mark class="esp"><?=$usuario['username'] . ' '?></mark><?php
+							 echo '|'; 
+							 ?><mark class="esp"><?=$reserva['fecha_inicio'].' hasta: '.$reserva['fecha_fin']?></mark><?php
+							 echo '|';
+							 ?><mark class="esp"><?=$usuario['email']?></mark><?php
+							 echo "<br>"."<br>";
+                             ?><mark class="esp"><?="[ACEPTADA]"?></mark><?php
+                         if( verificar_fechas($fecha_actual,$reserva['fecha_inicio'])){
+                             echo ' '.anchor(site_url().'user_controller/cancelar_reserva_concretada/'.$reserva['id_user'],'Cancelar','class="btn btn-info"');
+                         }
+                    
+                   }
+                    }?>
+					</center>
+					<p><?=anchor(site_url().'couch_controller/ver_couch/'.$id_couch,'Volver atras','class="btn btn-info"')?></p>
+                    <?php 
+                               function verificar_fechas($primera, $segunda)
+                             {    
+                                      $valoresPrimera = explode ("-", $primera);   
+                                      $valoresSegunda = explode ("-", $segunda); 
+                                      $anyoPrimera    = $valoresPrimera[0];  
+                                      $mesPrimera  = $valoresPrimera[1];  
+                                      $diaPrimera   = $valoresPrimera[2]; 
+                                      $anyoSegunda   = $valoresSegunda[0];  
+                                      $mesSegunda = $valoresSegunda[1];  
+                                      $diaSegunda  = $valoresSegunda[2];
+                                      $diasPrimeraJuliano = gregoriantojd($mesPrimera, $diaPrimera, $anyoPrimera);  
+                                      $diasSegundaJuliano = gregoriantojd($mesSegunda, $diaSegunda, $anyoSegunda);    
+                                      if(($diasPrimeraJuliano - $diasSegundaJuliano)>=0){
+                                        return FALSE;
+                                      }
+                                      return TRUE;                    
+                        }                    
+                    ?>
                 </div>
             </div>
         </div>

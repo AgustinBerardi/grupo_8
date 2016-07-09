@@ -89,9 +89,10 @@
         <div class="row">
             <div class="box">
                 <div class="col-lg-12">
-					<h2>Contrase&ntilde;a cambiada correctamente
-					<?= $this->session->userdata('username');?><br /></h2>
-					<center> <?=anchor(site_url().'home_controller','Volver al home',"class = 'btn btn-info'");?></center>
+					<center>Desea cancelar la solicitud de reserva?<br />
+                    <?=anchor(site_url().'user_controller/cancelar_reserva', 'Continuar', 'class="btn btn-info"');?>
+                    
+                    <?=anchor(site_url().'couch_controller/ver_couch/'.$id_couch, 'Cancelar', 'class="btn btn-info"');?></center>
                 </div>
             </div>
         </div>

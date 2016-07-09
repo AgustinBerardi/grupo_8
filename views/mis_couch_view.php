@@ -87,12 +87,37 @@
 
     <div class="container">
         <div class="row">
-            <div class="box">
-                <div class="col-lg-12">
-					<h2>Contrase&ntilde;a cambiada correctamente
-					<?= $this->session->userdata('username');?><br /></h2>
-					<center> <?=anchor(site_url().'home_controller','Volver al home',"class = 'btn btn-info'");?></center>
-                </div>
+            <div class="box">         
+					<?php
+                       $couchs= $this->couch_model->traer_couchs($this->session->userdata('id'));
+					   foreach ($couchs as $couch){
+							 if( $couch['alta'] == 1){
+    							$premium =  $this->couch_model->traer_campo('premium',$couch['usuario'],'user');
+    							$tipo = $this->couch_model->traer_campo('nombre_couch',$couch['tipo'],'tipo_couch');
+    							?>
+    							<div class="col-lg-12">
+    							<br>
+    							<div class="col-lg-2">
+    								<img src="<?=base_url()."CodeIgniter-2.2.6/uploads/".$couch['foto']?>" width=155px height=155px/> <?php
+    							?>
+    							</div>
+    							<div class="col-lg-10">
+    							<p>
+    							<?php
+    							echo 'Titulo:'.anchor(site_url()."couch_controller/ver_couch/".$couch['id'],$couch['nombre_couch']); 
+    							echo '<br>';
+    							echo 'Tipo: '.$tipo['nombre_couch'].'.';
+    							echo '<br>'.'Desde: '. $couch['fecha_inicio']. '<br>Hasta: '. $couch['fecha_fin'];
+    							echo '<br>';
+    							?>
+    							</p>
+    							</div>
+    							</div>
+    							<?php
+                            }
+						} 
+
+					?>
             </div>
         </div>
     </div>

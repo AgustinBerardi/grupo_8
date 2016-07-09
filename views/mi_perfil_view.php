@@ -89,9 +89,51 @@
         <div class="row">
             <div class="box">
                 <div class="col-lg-12">
-					<h2>Contrase&ntilde;a cambiada correctamente
-					<?= $this->session->userdata('username');?><br /></h2>
-					<center> <?=anchor(site_url().'home_controller','Volver al home',"class = 'btn btn-info'");?></center>
+								<?php
+									$pais = $this->user_model->traer_pais($pais);
+									 
+									?>
+									<p>Username</p>
+									<mark class=esp><?=$username?></mark>
+									<br><br>
+									<?=anchor(site_url().'comun_controller/cambiar_password','Cambiar password',"class='btn btn-info'")?>
+									<br><br>
+									<p>Tipo de usuario:</p>
+									<?php 
+									if($this->session->userdata('perfil')=='administrador')
+										echo 'Administrador';
+									else
+										if($this->session->userdata('premium')==1)
+											echo '<mark class=esp>Premium</mark>';                           
+										else{
+											echo '<mark class=esp>Comun</mark>';
+											echo '<br>';
+											echo '<br>';
+											echo anchor('user_controller/ingresar_tarjeta_premium','Hacerse premium',"class='btn btn-info'");                        
+										}
+									
+									?>
+									<br><br>
+									<p>E-Mail:</p>
+									<mark class=esp><?=$email?></mark>
+									<br><br>
+									<p>Nombre:</p>
+									<mark class=esp><?=$nombre?></mark>
+									<br><br>
+									<p>Apellido:</p>
+									<mark class=esp><?=$apellido?></mark>
+									<br><br>
+									<p>Nacionalidad:</p>
+									<mark class=esp><?=$pais['nombre']?></mark>
+									<br><br>
+									<p><a class="btn btn-info" href="<?=site_url().'comun_controller/modificar_informacion'?>">Modificar mi información</a></p>
+									<p>Couchs</p>
+						             <?=anchor(site_url().'user_controller/mis_couchs','Mis couchs',"class='btn btn-info'");?>
+                                     <br />
+                                     <br />
+								<p><a class="btn btn-info" href="<?=site_url().'home_controller'?>">Volver atrás</a></p>
+								<?php if($this->session->userdata('perfil')!='administrador')
+									echo anchor(site_url().'user_controller/eliminar_cuenta_opciones','Eliminar cuenta',"class='btn btn-info'");?>
                 </div>
             </div>
         </div>
