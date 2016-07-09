@@ -20,7 +20,8 @@
                           WHERE username='$username'";
                 $query_result= $this->db->query($query);
                 if(!($query_result->num_rows() == 0)){
-                    $this->session->set_flashdata('usuario_existente','Ese nombre de usuario no está disponible');
+                    $this->session->set_flashdata('usuario',$user);
+                    $this->session->set_flashdata('usuario_existente',utf8_encode('Ese nombre de usuario no está disponible'));
                     redirect(site_url().'signup_controller','refresh');
                     }
                 else
@@ -30,7 +31,8 @@
                           WHERE email='$email'";
                         $query_result= $this->db->query($query);
                         if(!($query_result->num_rows() == 0)){
-                            $this->session->set_flashdata('email_existente','Ese email no está disponible');
+                            $this->session->set_flashdata('usuario',$user);
+                            $this->session->set_flashdata('email_existente',utf8_encode('Ese email no está disponible'));
                             redirect(site_url().'signup_controller','refresh');
                         } 
                          else{
@@ -48,9 +50,7 @@
             $query_result= $this->db->query($query);
             return $query_result->result();            
         }
-        
-        
-        
+       
     }
 
 

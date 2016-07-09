@@ -15,13 +15,20 @@
                 if($query_result->row()->habilitado){
                   return $query_result->row();
                 }  else{
+                     $data['username']=$username;
+                     $data['password']=$pass; 
+                     $this->session->set_flashdata('usuario',$data);
                      $this->session->set_flashdata('usuario_incorrecto','La cuenta del usuario esta dada de baja');
                      redirect(site_url().'login_controller','refresh');
                 }
             }      
-            else
+            else{
+                 $data['username']=$user['username'];
+                 $data['password']=$user['password']; 
+                 $this->session->set_flashdata('usuario',$data);
                  $this->session->set_flashdata('usuario_incorrecto','El username o password no es correcto');
                  redirect(site_url().'login_controller','refresh');
+            }
             
         }
         public function buscar_user($username){
