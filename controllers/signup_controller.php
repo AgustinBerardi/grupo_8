@@ -11,7 +11,7 @@
         } 
         public function index(){
             if(verificar_public_user($this->session->userdata('perfil')))
-                 $this->load->view('signup_view');
+                 $this->load->view('signup_view',$this->input->post());
         }
         
         
@@ -22,6 +22,7 @@
               $this->form_validation->set_rules('nombre','nombre','callback_verificar_campo');
               $this->form_validation->set_rules('apellido','apellido','callback_verificar_campo');
               $this->form_validation->set_rules('conf_password','conf_password','callback_comparar_pass');
+              $this->form_validation->set_rules('fecha','fecha','callback_verificar_edad');            
               if($this->form_validation->run()== FALSE)
                         $this->index();
               else{
@@ -41,23 +42,13 @@
               }
         }
          
-        public function verificar_username($username){   
-            if  (!(preg_match("/^([a-zA-Z]){1}/",$username))) { 
-               $this->form_validation->set_message('verificar_username','No es un nombre de usuario valido. Debe comenzar con una letra'); 
+        public function verificar_username($username){
+            
+            if  (!(preg_match("/^([a-zA-Z]){1}([a-zA-Z0-9_]){3}/",$username)) || strlen($username)>20)
+             { 
+               $this->form_validation->set_message('verificar_username','No es un nombre de usuario valido. Debe comenzar con una letra seguido de letras y numeros. Debe tener entre 4 y 12 caracteres COMO TU MADRE'); 
                return FALSE;
              }
-            if(strlen($username)<4 || strlen($username)>20)
-            {
-               $this->form_validation->set_message('verificar_username','No es un nombre de usuario valido. El nombre debe comprender entre 4 y 20 caracteres'); 
-               return FALSE;   
-            }     
-             $permitidos = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' '_1234567890"; 
-               for ($i=0; $i<strlen($username); $i++){ 
-                  if (strpos($permitidos, substr($username,$i,1))===false){ 
-                     $this->form_validation->set_message('verificar_username','El username contiene caracteres que no son validos');
-                     return false; 
-                  } 
-               }
              return TRUE;
         }
         public function comparar_pass($conf_password){
@@ -68,17 +59,10 @@
             return TRUE;
         }
         public function verificar_pass($password){
-            if (strlen($password)<8 || strlen($password) > 16){
-                $this->form_validation->set_message('verificar_pass','Contraseña no valida.Debe tener entre 8 y 16 caracteres');
+            if (!(preg_match("/^([a-zA-Z0-9]){8}/",$password)) || strlen($password) > 16){
+                $this->form_validation->set_message('verificar_pass','Contraseña no valida. Solo se permiten numeros y letras. Debe tener entre 8 y 16 caracteres');
                 return FALSE;
             }
-            $permitidos = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' '_1234567890"; 
-               for ($i=0; $i<strlen($password); $i++){ 
-                  if (strpos($permitidos, substr($password,$i,1))===false){ 
-                     $this->form_validation->set_message('verificar_pass','El password debe contener letras numeros y "_"');
-                     return false; 
-                  } 
-               }
             return TRUE;
         }
         public function verificar_email($email){
@@ -89,18 +73,28 @@
             return TRUE;
         }
         public function verificar_campo($campo){
-            if (strlen($campo)<2){
+            if (!(preg_match("/^([a-zA-Z]){2}/",$campo))){
                 $this->form_validation->set_message('verificar_campo','El campo debe tener por lo menos 2 letras');
                 return FALSE;
             }
-            $permitidos = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' '"; 
-               for ($i=0; $i<strlen($campo); $i++){ 
-                  if (strpos($permitidos, substr($campo,$i,1))===false){ 
-                     $this->form_validation->set_message('verificar_campo','El campo contiene caracteres que no son validos');
-                     return false; 
-                  } 
-               }
             return TRUE;
+        }
+        public function verificar_edad($edad){
+                trim($edad);
+                $trozos = explode("-", $edad);
+                if(!(sizeOf($trozos)==3)){
+                    $this->form_validation->set_message('verificar_edad','La fecha ingresada es invalida');
+                    return FALSE;
+                }
+                $dia=$trozos[2];                
+                $mes=$trozos[1];               
+                $año=$trozos[0];            
+                if(checkdate ($mes,$dia,$año)){
+                    return TRUE;
+                }else{
+                     $this->form_validation->set_message('verificar_edad','La fecha ingresada es invalida');
+                     return FALSE;
+                }
         }
         
     }

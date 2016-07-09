@@ -12,7 +12,7 @@
         
         public function index (){
            if(verificar_public_user($this->session->userdata('perfil')))
-                 $this->load->view('login_view');
+                 $this->load->view('login_view',$this->input->post());
        
         }
         
@@ -30,7 +30,6 @@
                     if($check_user){
                             	$data = array(
                                'premium'        =>      $check_user->premium,
-	                           'id_usuario' 	=> 		$check_user->id,
                                'perfil'	     	=>		$check_user->perfil,
 	                           'username' 		=> 		$check_user->username);
                             $this->session->set_userdata($check_user);

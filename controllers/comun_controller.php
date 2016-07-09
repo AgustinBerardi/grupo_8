@@ -57,7 +57,7 @@ class Comun_Controller extends CI_Controller {
         
         public function cambiar_password(){
             if(verificar_comun_user($this->session->userdata('perfil')))
-                    $this->load->view('cambiar_password_view');
+                    $this->load->view('cambiar_password_view',$this->input->post());
         }
          
         public function verificar_cambio_password (){
